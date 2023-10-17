@@ -30,7 +30,6 @@ export class TaskService {
       }
 
     updateTask(updateTaskDto: TaskModel, id: number): TaskModel {
-        console.log(id)
         const taskIndex = this._tasks.findIndex(t => t.id == id);
         console.log(this._tasks);
 
@@ -45,6 +44,15 @@ export class TaskService {
           };
         
           return this._tasks[taskIndex];
+    }
+
+    deleteTask(id: number): boolean {
+        const taskIndex = this._tasks.findIndex(t => t.id == id);
+        if (taskIndex === -1) {
+            return false;
+        }
+        this._tasks.splice(taskIndex, 1);
+        return true;
 
     }
     

@@ -1,6 +1,7 @@
-import { Body, Controller, Get, HttpException, HttpStatus, NotFoundException, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, Post, Put, Res } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { TaskModel } from './task.model';
+import { Response } from 'express';
 
 @Controller('tasks')
 export class TasksController {
@@ -46,6 +47,17 @@ export class TasksController {
     updateTask(@Param('id') id: number, @Body() updateTaskDto: TaskModel) {
         const updatedTask = this.taskService.updateTask(updateTaskDto, id);
         return updatedTask;
+    }
+
+    @Delete(':id')
+    deleteTask(@Param('id') id: number, @Res() response: Response) {
+        const deleted = this.taskService.deleteTask(id);
+    if (deleted) {
+        response.status(200).json({ message: 'Task deleted successfully' });
+    } else {
+        response.status(404).json({ message: 'Task not found or could not be deleted' });
+    }
+
     }
 
 
